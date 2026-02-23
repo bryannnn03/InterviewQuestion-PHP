@@ -1,0 +1,22 @@
+[
+    {
+        "employeeName": "John Doe",
+        "gender": "Male",
+        "maritalStatus": "Single",
+        "phoneNo": "0123456789",
+        "email": "johndoe@example.com",
+        "address": "123, Jalan Tikus, Kuala Lumpur",
+        "dateOfBirth": "2001-01-01",
+        "nationality": "Malaysian",
+        "hireDate": "2011-12-01",
+        "department": "IT",
+        "employeeId": "EMP-0001",
+        "position": "Software Engineering",
+        "emergencyName": "John Doe S",
+        "emergencyPhone": "0123456788",
+        "notes": "",
+        "salary": 5500,
+        "id": "1771836870941",
+        "createdAt": "2026-02-23 09:54:30"
+    }
+]

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR Manager — Add Employee</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <h1>HR Manager</h1>
+  <a href="index.html" class="active">Add Employee</a>
+  <a href="EmployeeList.html">All Employees</a>
+</nav>
+
+<div class="container">
+  <h2>Add New Employee</h2>
+
+  <!-- Personal Information -->
+  <div class="card">
+    <h3>Personal Information</h3>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="employeeName">Full Name <span class="req">*</span></label>
+        <input type="text" id="employeeName" placeholder="e.g. Sherlin Tan" />
+        <span class="error-msg" id="err-employeeName"></span>
+      </div>
+
+      <div class="field">
+        <label for="email">Email Address <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="sherlin@company.com" />
+        <span class="error-msg" id="err-email"></span>
+      </div>
+
+      <div class="field">
+        <label for="phoneNo">Phone Number <span class="req">*</span></label>
+        <input type="text" id="phoneNo" placeholder="+60 12-345 6789" />
+        <span class="error-msg" id="err-phoneNo"></span>
+      </div>
+
+      <div class="field">
+        <label for="dateOfBirth">Date of Birth <span class="req">*</span></label>
+        <input type="date" id="dateOfBirth" />
+        <span class="error-msg" id="err-dateOfBirth"></span>
+      </div>
+
+      <div class="field">
+        <label for="nationality">Nationality <span class="req">*</span></label>
+        <select id="nationality">
+          <option value="">Select...</option>
+          <option>Malaysian</option>
+          <option>Indonesian</option>
+          <option>Philippine</option>
+          <option>Thai</option>
+          <option>Vietnamese</option>
+          <option>Other</option>
+        </select>
+        <span class="error-msg" id="err-nationality"></span>
+      </div>
+
+      <div class="field">
+        <label for="address">Address <span class="req">*</span></label>
+        <input type="text" id="address" placeholder="123, Jalan Example, Kuala Lumpur" />
+        <span class="error-msg" id="err-address"></span>
+      </div>
+
+      <div class="field">
+        <label for="icPassport">IC / Passport No.</label>
+        <input type="text" id="icPassport" placeholder="e.g. 900101-14-5678" />
+      </div>
+
+      <div class="field">
+        <label for="religion">Religion</label>
+        <select id="religion">
+          <option value="">Select...</option>
+          <option>Islam</option>
+          <option>Christianity</option>
+          <option>Buddhism</option>
+          <option>Hinduism</option>
+          <option>Other</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="card">
+    <h3>Status</h3>
+    <div class="form-grid">
+
+      <div class="field">
+        <label>Gender <span class="req">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="Male" /> Male</label>
+          <label><input type="radio" name="gender" value="Female" /> Female</label>
+          <label><input type="radio" name="gender" value="Other" /> Other</label>
+        </div>
+        <span class="error-msg" id="err-gender"></span>
+      </div>
+
+      <div class="field">
+        <label>Marital Status <span class="req">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="maritalStatus" value="Single" /> Single</label>
+          <label><input type="radio" name="maritalStatus" value="Married" /> Married</label>
+          <label><input type="radio" name="maritalStatus" value="Divorced" /> Divorced</label>
+          <label><input type="radio" name="maritalStatus" value="Widowed" /> Widowed</label>
+        </div>
+        <span class="error-msg" id="err-maritalStatus"></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Employment Details -->
+  <div class="card">
+    <h3>Employment Details</h3>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="department">Department <span class="req">*</span></label>
+        <select id="department">
+          <option value="">Select...</option>
+          <option>IT</option>
+          <option>Finance</option>
+          <option>HR</option>
+          <option>Marketing</option>
+        </select>
+        <span class="error-msg" id="err-department"></span>
+      </div>
+
+      <div class="field">
+        <label for="hireDate">Hire Date <span class="req">*</span></label>
+        <input type="date" id="hireDate" />
+        <span class="error-msg" id="err-hireDate"></span>
+      </div>
+
+      <div class="field">
+        <label for="position">Position / Job Title</label>
+        <input type="text" id="position" placeholder="e.g. Software Engineer" />
+      </div>
+
+      <div class="field">
+        <label for="employmentType">Employment Type</label>
+        <select id="employmentType">
+          <option value="">Select...</option>
+          <option>Full-time</option>
+          <option>Part-time</option>
+          <option>Contract</option>
+          <option>Intern</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="salary">Monthly Salary (MYR)</label>
+        <input type="number" id="salary" placeholder="e.g. 3500" min="0" />
+        <span class="error-msg" id="err-salary"></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Emergency Contact -->
+  <div class="card">
+    <h3>Emergency Contact</h3>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="emergencyName">Contact Name</label>
+        <input type="text" id="emergencyName" placeholder="e.g. Siti Rahimah" />
+      </div>
+
+      <div class="field">
+        <label for="emergencyPhone">Contact Phone</label>
+        <input type="text" id="emergencyPhone" placeholder="+60 11-234 5678" />
+        <span class="error-msg" id="err-emergencyPhone"></span>
+      </div>
+
+    </div>
+  </div>
+
+    <div class="form-actions">
+      <button class="btn-secondary" onclick="resetForm()">Clear Form</button>
+      <button class="btn-primary" id="submitBtn" onclick="submitForm()">Add Employee</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="App.js"></script>
+<script>
+  function getFormData() {
+    return {
+      employeeName:   document.getElementById('employeeName').value.trim(),
+      email:          document.getElementById('email').value.trim(),
+      phoneNo:        document.getElementById('phoneNo').value.trim(),
+      dateOfBirth:    document.getElementById('dateOfBirth').value,
+      nationality:    document.getElementById('nationality').value,
+      address:        document.getElementById('address').value.trim(),
+      icPassport:     document.getElementById('icPassport').value.trim(),
+      religion:       document.getElementById('religion').value,
+      gender:         document.querySelector('input[name="gender"]:checked')?.value || '',
+      maritalStatus:  document.querySelector('input[name="maritalStatus"]:checked')?.value || '',
+      department:     document.getElementById('department').value,
+      hireDate:       document.getElementById('hireDate').value,
+      position:       document.getElementById('position').value.trim(),
+      employmentType: document.getElementById('employmentType').value,
+      salary:         document.getElementById('salary').value,
+      emergencyName:  document.getElementById('emergencyName').value.trim(),
+      emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+    };
+  }
+
+  async function submitForm() {
+    const data = getFormData();
+
+    // Step 1: Frontend validation
+    const frontendErrors = validateForm(data);
+    if (Object.keys(frontendErrors).length > 0) {
+      showErrors(frontendErrors);
+      return;
+    }
+
+    // Step 2: Send to PHP REST API
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    try {
+      const res = await API.addEmployee(data);
+
+      if (res.success) {
+        showToast('Employee added successfully!');
+        resetForm();
+        setTimeout(() => window.location.href = 'EmployeeList.html', 1200);
+      } else if (res.errors) {
+        // Show backend validation errors
+        showErrors(res.errors);
+        showToast('Please fix the errors below.', 'error');
+      } else {
+        showToast(res.error || 'Something went wrong.', 'error');
+      }
+    } catch (err) {
+      showToast('Cannot connect to server. Make sure PHP is running.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Add Employee';
+    }
+  }
+
+  function resetForm() {
+    document.querySelectorAll('input:not([type=radio]), select, textarea').forEach(el => el.value = '');
+    document.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
+    document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+    document.querySelectorAll('input, select').forEach(el => el.classList.remove('error'));
+  }
+</script>
+
+</body>
+</html>

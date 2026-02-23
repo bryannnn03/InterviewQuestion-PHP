@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR Manager — All Employees</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav>
+  <h1>HR Manager</h1>
+  <a href="index.html">Add Employee</a>
+  <a href="EmployeeList.html" class="active">All Employees</a>
+</nav>
+
+<div class="container">
+
+  <div class="list-header">
+    <h2>All Employees <span id="empCount" class="count-badge"></span></h2>
+    <div class="list-actions">
+      <input type="text" id="searchInput" placeholder="Search name, dept, email..." oninput="filterTable()" />
+      <select id="deptFilter" onchange="filterTable()">
+        <option value="">All Departments</option>
+        <option>IT</option>
+        <option>Finance</option>
+        <option>HR</option>
+        <option>Marketing</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="tableContainer">
+    <div class="empty">Loading employees...</div>
+  </div>
+
+</div>
+
+<!-- Profile Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-name">Employee Profile</h3>
+      <button class="modal-close" onclick="closeModal()">Close</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-danger" id="deleteBtn">Delete Employee</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="App.js"></script>
+<script>
+  let allEmployees = [];
+  let currentId = null;
+
+  // ── Load employees from API (reads from employees.json) ──
+  async function loadEmployees() {
+    try {
+      const res = await API.getEmployees();
+      if (res.success) {
+        allEmployees = res.data;
+        renderTable(allEmployees);
+        document.getElementById('empCount').textContent = `(${allEmployees.length})`;
+      }
+    } catch (err) {
+      document.getElementById('tableContainer').innerHTML =
+        `<div class="empty">⚠ Could not connect to server. Make sure PHP is running.</div>`;
+    }
+  }
+
+  // ── Render table ──────────────────────────────────────────
+  function renderTable(employees) {
+    const container = document.getElementById('tableContainer');
+
+    if (employees.length === 0) {
+      container.innerHTML = `<div class="empty">No employees found. <a href="index.html">Add one</a>.</div>`;
+      return;
+    }
+
+    container.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Hire Date</th>
+            <th>Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${employees.map((e, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td><strong>${e.employeeName}</strong></td>
+              <td>${e.position || '—'}</td>
+              <td><span class="dept-tag">${e.department}</span></td>
+              <td>${e.email}</td>
+              <td>${e.phoneNo}</td>
+              <td>${formatDate(e.hireDate)}</td>
+              <td>${e.employmentType || '—'}</td>
+              <td>
+                <button class="btn-secondary btn-sm" onclick="openModal(${e.id})">View</button>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>`;
+  }
+
+  // ── Filter by search + department ─────────────────────────
+  function filterTable() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const dept  = document.getElementById('deptFilter').value;
+
+    const filtered = allEmployees.filter(e => {
+      const matchSearch =
+        e.employeeName.toLowerCase().includes(query) ||
+        e.email.toLowerCase().includes(query) ||
+        (e.position || '').toLowerCase().includes(query) ||
+        e.department.toLowerCase().includes(query);
+      const matchDept = !dept || e.department === dept;
+      return matchSearch && matchDept;
+    });
+
+    renderTable(filtered);
+  }
+
+  // ── Open profile modal ────────────────────────────────────
+  function openModal(id) {
+    const e = allEmployees.find(emp => emp.id == id);
+    if (!e) return;
+    currentId = id;
+
+    document.getElementById('modal-name').textContent = e.employeeName;
+
+    const fields = [
+      ['Employee ID',       e.employeeId || '—'],
+      ['Position',          e.position || '—'],
+      ['Department',        e.department],
+      ['Employment Type',   e.employmentType || '—'],
+      ['Email',             e.email],
+      ['Phone',             e.phoneNo],
+      ['Gender',            e.gender],
+      ['Marital Status',    e.maritalStatus],
+      ['Date of Birth',     formatDate(e.dateOfBirth)],
+      ['Nationality',       e.nationality],
+      ['Religion',          e.religion || '—'],
+      ['IC / Passport',     e.icPassport || '—'],
+      ['Address',           e.address],
+      ['Hire Date',         formatDate(e.hireDate)],
+      ['Salary (MYR)',      e.salary ? `RM ${Number(e.salary).toLocaleString()}` : '—'],
+      ['Emergency Contact', e.emergencyName ? `${e.emergencyName} — ${e.emergencyPhone}` : '—'],
+    ];
+
+    document.getElementById('modal-body').innerHTML = fields.map(([label, value]) => `
+      <div class="modal-field">
+        <span class="modal-label">${label}</span>
+        <span class="modal-value">${value}</span>
+      </div>
+    `).join('');
+
+    if (e.notes) {
+      document.getElementById('modal-body').innerHTML += `
+        <div class="modal-field full">
+          <span class="modal-label">Notes</span>
+          <span class="modal-value">${e.notes}</span>
+        </div>`;
+    }
+
+    document.getElementById('modal').classList.add('show');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('show');
+    currentId = null;
+  }
+
+  // ── Delete employee ───────────────────────────────────────
+  document.getElementById('deleteBtn').addEventListener('click', async () => {
+    if (!currentId) return;
+    if (!confirm('Are you sure you want to delete this employee?')) return;
+
+    try {
+      const res = await API.deleteEmployee(currentId);
+      if (res.success) {
+        showToast('Employee deleted.');
+        closeModal();
+        loadEmployees();
+      } else {
+        showToast(res.error || 'Delete failed.', 'error');
+      }
+    } catch {
+      showToast('Could not connect to server.', 'error');
+    }
+  });
+
+  // ── Close modal on overlay click / Escape ─────────────────
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ── Init ──────────────────────────────────────────────────
+  loadEmployees();
+</script>
+
+</body>
+</html>
